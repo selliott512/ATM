@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="build" name="ATM">
+    <!-- Properties -->
+    <property environment="env"/>
+    <property name="version" value="0.9.0"/>
+    <property name="test.dir" value="junit"/>
+    <property name="javac.debug" value="true"/>
+    <property name="javac.debuglevel" value="source,lines,vars"/>
+    <property name="javac.source" value="1.7"/>
+    <property name="javac.target" value="${javac.source}"/>
+    <property name="build.dir" value="bin"/>
+    <property name="dist.dir" value="dist"/>
+    <property name="doc.dir" value="doc"/>
+    <property name="doc.build.dir" value="doc-bin"/>
+    <property name="src.dir" value="src"/>
+
+    <!-- Paths -->
+    <path id="compile.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="resources"/>
+          <fileset dir="lib">
+              <include name="*.jar"/>
+          </fileset>
+    </path>
+    <path id="test.compile.classpath">
+        <path refid="compile.classpath"/>
+        <!-- This may incorrect on your system, but you only need to abjust
+             it if you care about running the junit tests. -->
+        <pathelement location="lib/junit4.jar"/>
+    </path>
+
+    <!-- Targets -->
+    <target name="init" description="Create directories.">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${test.dir}"/>
+    </target>
+    <target name="compile" description="Compile java files to class files." depends="init">
+        <javac debug="${javac.debug}" debuglevel="${javac.debuglevel}" destdir="${build.dir}"
+               includeantruntime="false" source="${javac.source}" target="${javac.target}" srcdir="${src.dir}"
+               classpathref="compile.classpath">
+            <exclude name="**/*Test.java"/>
+        </javac>
+    </target>
+    <target name="test_compile" description="Compile java files to class files that have to do with testing" depends="init">
+        <javac debug="${javac.debug}" debuglevel="${javac.debuglevel}" destdir="${build.dir}"
+               includeantruntime="false" source="${javac.source}" target="${javac.target}" srcdir="${src.dir}"
+               classpathref="test.compile.classpath">
+            <include name="**/*Test.java"/>
+        </javac>
+    </target>
+    <target name="build" description="Create files that can be distributed." depends="compile">
+        <copy todir="${doc.build.dir}">
+            <fileset dir="${doc.dir}"/>
+        </copy>
+        <replace dir="${doc.build.dir}" token="__version__" value="${version}"/>
+        <jar destfile="${dist.dir}/atm-client-${version}.jar">
+            <fileset dir="${build.dir}">
+                <exclude name="**/server/*.class"/>
+                <exclude name="**/*Test.class"/>
+            </fileset>
+        </jar>
+        <zip destfile="${dist.dir}/atm-${version}-src.zip" basedir="." excludes="bin/**,dist/**"/>
+    </target>
+    <target name="test" description="Run the tests." depends="test_compile">
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="org.selliott.atm.test.JUTest" todir="${test.dir}"/>
+            <classpath refid="test.compile.classpath"/>
+        </junit>
+    </target>
+    <target name="test_report" description="Generate an HTML summary of the tests." depends="test">
+        <junitreport todir="${test.dir}">
+            <fileset dir="${test.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${test.dir}"/>
+        </junitreport>
+    </target>
+    <target name="client" description="Run the client." depends="build">
+        <java classname="org.selliott.atm.client.Main" failonerror="true" fork="yes">
+            <arg line="resources/atm.properties"/>
+            <classpath refid="compile.classpath"/>
+        </java>
+    </target>
+    <target name="server" description="Run the server." depends="build">
+        <java classname="org.selliott.atm.server.Main" failonerror="true" fork="yes">
+            <arg line="resources/atm.properties"/>
+            <classpath refid="compile.classpath"/>
+        </java>
+    </target>
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+        <delete dir="${doc.build.dir}"/>
+        <delete dir="${test.dir}"/>
+    </target>
+</project>

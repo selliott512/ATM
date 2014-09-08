@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<atmRequest>
+  <command name="get-balance">
+    <field name="num" value="1234"/>
+    <field name="pin" value="1111"/>
+  </command>
+  <command name="get-balance">
+    <field name="num" value="1234"/>
+    <field name="pin" value="4321"/>
+  </command>
+  <command name="deposit">
+    <field name="num" value="1234"/>
+    <field name="pin" value="4321"/>
+    <field name="amount" value="11.11"/>
+  </command>
+  <command name="withdraw">
+    <field name="num" value="1234"/>
+    <field name="pin" value="4321"/>
+    <field name="amount" value="11.11"/>
+  </command>
+  <command name="withdraw">
+    <field name="num" value="1234"/>
+    <field name="pin" value="4321"/>
+    <field name="amount" value="1000"/>
+  </command>
+  <command name="get-balance">
+    <field name="num" value="1234"/>
+    <field name="pin" value="4321"/>
+  </command>
+</atmRequest>

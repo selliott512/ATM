@@ -1,0 +1,23 @@
+This file has information relevant to installing and running both the server and client.
+
+To prepare a system to run the ATM server follow these steps:
+
+1) Identify a database server and create a database named "atm" on it.  Currently onlp PostgreSQL is supported.
+2) Populate the database:
+  psql -U atm -h localhost atm atm < resources/atm-postgresql.sql
+3) Update the configuration to refer to the database created in step 1) by editing "dbURL" in resources/atm.properties
+
+To run the ATM server on a prepared system follow these steps:
+
+1) Start the server in the following manner:
+  java -classpath bin:lib/jetty-continuation.jar:lib/jetty-http.jar:lib/jetty-io.jar:lib/jetty-server.jar:lib/jetty-util.jar:lib/servlet.jar:lib/log4j.jar:resources:lib/postgresql-jdbc.jar org.selliott.atm.server.Main resources/atm.properties
+   or use the Ant build to start it:
+  ant server
+
+To run the ATM client follow these steps:
+
+1) Start the client in the following manner:
+
+  java -classpath lib/log4j.jar:resources org.selliott.atm.client.Main resources/atm.properties
+   or use the Ant build to start it:
+  ant client

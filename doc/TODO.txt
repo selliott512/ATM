@@ -1,0 +1,25 @@
+This file contains a list of future improvements that could be made to ATM.
+
+1) Client improvements:
+  1.1) The client GUI could be made more like an actual ATM machine in terms of look and feel.
+  1.2) The client GUI could simulate working with actual money.  Currently the client accepts deposits and withdraws for any amount.  Perhaps it should be limited to multiples of $20, or whatever physically practical.
+  1.3) The client GUI could be better organized.  Currently all of the Java Swing code in org.selliott.atm.client.Main.Main().
+  1.4) A Java Swing GUI is probably not optimal.  It should probably have a web interface via HTML5 + JavaScript.  Doing so would make it possible to use an ordinary browser as a test tool.  The ATMs would contain rudimentary browsers capable of displaying the page.
+  1.5) The error messages could be more user friendly.  One way of doing this is to have internal and external error messages for each error.  The client would only display the external error messages.
+
+2) Server improvements:
+  2.1) Code generators could be used.  For example, the SOAPish interface could have been generated from a WSDL.  The client interface could have consumed that WSDL.
+  2.2) ATMException and ATMError could possibly be combined.  Maybe ATMException should have an ATMError element.  Doing so would assist in sending the correct error code when the exception jumps up multiple stack frames in the server.
+  2.3) Jetty features, such as annotations, could be used so that Jetty handles much of the parsing. As it is Jetty is being used in the lowest level and simplest possible way - HTTHandle is being used to receive HTTP requests.
+  2.4) A database connection pool could be used.  As it is there is a single connection.
+  2.5) As features are added, such as the ability to change the PIN, etc., a more sophisticated locking strategy could be used.  As it is the way transactions are done (at the command level) combined with the database row locking that happens naturally during updates should be sufficient to protect against concurrent withdraws withdrawing too much money.
+  2.6) A Java container such as Karaf could be used.
+  2.7) HTTPS should be used instead of HTTP.  This could be managed with an internal self signed certificate authority that would then be added to the client's truststore.
+  2.8) Test data should be separated from the base database schema.  As it is there a single SQL file is used to initialize the database:
+  atm-postgesql.sql
+       which should probably be split into the basic schema, used for production, and test data, used for testing:
+  atm-postgesql-base.sql
+  atm-postgesql-test.sql
+  2.9) The server starts by verifying the PIN but then continues to select for both the account number and PIN in the database as an added security measure.  The data found in the database does not provide an optimal amount of information (in the account number invalid, the PIN, or both?).  Perhaps the stored procedures could return the entire row in the database given just the account number combined with the additional locking mentioned in 2.5.
+  2.10) Currently only the Command class is being exercised by the JUnit test.  The web interface could also be tested via Jersey Test.
+  2.11) Update the dependencies in the "lib" dir.  The jars included are the latset jars in the Fedora 17 and Fedora 20 distros.

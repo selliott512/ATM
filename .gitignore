@@ -1,0 +1,7 @@
+*~
+bin
+log
+abrt_checker_*.log
+dist/
+doc-bin/
+junit/

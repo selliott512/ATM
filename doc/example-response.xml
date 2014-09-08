@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<atmResponse>
+  <result error="INVALID_PIN" name="get-balance"/>
+  <result error="SUCCESS" name="get-balance">
+    <field name="balance" value="100.00"/>
+  </result>
+  <result error="SUCCESS" name="deposit">
+    <field name="balance" value="111.11"/>
+  </result>
+  <result error="SUCCESS" name="withdraw">
+    <field name="balance" value="100.00"/>
+  </result>
+  <result error="INSUFFICIENT_FUNDS" name="withdraw"/>
+  <result error="SUCCESS" name="get-balance">
+    <field name="balance" value="100.00"/>
+  </result>
+</atmResponse>

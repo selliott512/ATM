@@ -1,0 +1,9 @@
+This file has information that may be helpful to developers.
+
+1) To test the ATM server web interface without the benefit of the ATM client curl can be used:
+  curl -v -X POST -T doc/example-request.xml http://localhost:8080/atm > /tmp/example-response.xml
+   if the database has the expected test data in in the result can be compared to the provided expected response:
+  diff /tmp/example-response.xml doc
+
+2) If the schema has been changed the database dump should be updated.  Only PostgreSQL is shown at this time:
+  pg_dump -xOU atm -h localhost atm > resources/atm-postgresql.sql
