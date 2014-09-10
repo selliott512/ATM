@@ -23,3 +23,5 @@ This file contains a list of future improvements that could be made to ATM.
   2.9) The server starts by verifying the PIN but then continues to select for both the account number and PIN in the database as an added security measure.  The data found in the database does not provide an optimal amount of information (in the account number invalid, the PIN, or both?).  Perhaps the stored procedures could return the entire row in the database given just the account number combined with the additional locking mentioned in 2.5.
   2.10) Currently only the Command class is being exercised by the JUnit test.  The web interface could also be tested via Jersey Test.
   2.11) Update the dependencies in the "lib" dir.  The jars included are the latset jars in the Fedora 17 and Fedora 20 distros.
+  2.12) Make the web interface more REST like by using the appropriate HTTP method verbs (GET, PUT, etc.). Currently only POST is used in the interest of always submitting the same XML format.
+  2.13) Create a wrapper shell script for both the client and server that dynamically builds the classpath based on the JARs in the "lib" dir.
