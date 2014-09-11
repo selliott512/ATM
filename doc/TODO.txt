@@ -25,3 +25,5 @@ This file contains a list of future improvements that could be made to ATM.
   2.11) Update the dependencies in the "lib" dir.  The jars included are the latset jars in the Fedora 17 and Fedora 20 distros.
   2.12) Make the web interface more REST like by using the appropriate HTTP method verbs (GET, PUT, etc.). Currently only POST is used in the interest of always submitting the same XML format.
   2.13) Create a wrapper shell script for both the client and server that dynamically builds the classpath based on the JARs in the "lib" dir.
+  2.14) Audit the access level modifiers (public, private, etc.) to make sure they are reasonable.
+  2.15) Related to 2.14) it should not be necessary to make class members public just so they can be tested.  Either a test tool should be used that can access private members, or better yet make sure that everything that needs to be tested can be accessed from the public interface.
